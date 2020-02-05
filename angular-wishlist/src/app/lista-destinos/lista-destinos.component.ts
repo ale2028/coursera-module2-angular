@@ -1,6 +1,8 @@
+// @ts-ignore
 import { Component, OnInit } from '@angular/core';
 import {DestinoViaje} from '../models/destino-viaje.model';
 
+// @ts-ignore
 @Component({
   selector: 'app-lista-destinos',
   templateUrl: './lista-destinos.component.html',
