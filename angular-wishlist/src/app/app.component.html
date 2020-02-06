@@ -1,10 +1,22 @@
 <div class="container content">
-  <div class="row">
-    <h1>
-      angular-wishlist
-    </h1>
+  <div class="page-header">
+    <div class="container">
+      <h1>Ruteo Simple</h1>
+      <div class="navLinks">
+        <a [routerLink]="['/home']">Home</a>
+        <a [routerLink]="['/destino']">Destino</a>
+
+      </div>
+    </div>
   </div>
 
-  <app-lista-destinos></app-lista-destinos>
-<!--  <app-destino-viaje></app-destino-viaje>-->
+
+<div class="row">
+  <h1>
+    angular-wishlist
+  </h1>
+</div>
+
+
+<router-outlet></router-outlet>
 </div>

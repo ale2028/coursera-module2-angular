@@ -1,7 +1,8 @@
 // @ts-ignore
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {DestinoViaje} from '../models/destino-viaje.model';
-
+// @ts-ignore
+import {DestinosApiClient} from '../models/destinos-api-client.model';
 // @ts-ignore
 @Component({
   selector: 'app-lista-destinos',
@@ -9,17 +10,22 @@ import {DestinoViaje} from '../models/destino-viaje.model';
   styleUrls: ['./lista-destinos.component.css']
 })
 export class ListaDestinosComponent implements OnInit {
-  destinos: DestinoViaje[];
+  @Output() onItemAdded: EventEmitter<DestinoViaje>;
 
-  constructor() {
-    this.destinos = [];
+  constructor(private destinosApiClient: DestinosApiClient) {
+    this.onItemAdded = new EventEmitter();
   }
 
   ngOnInit() {
   }
 
-  guardar(nombre: string, url: string): boolean {
-    this.destinos.push(new DestinoViaje(nombre, url));
-    return false;
+  agregado(d: DestinoViaje) {
+    this.destinosApiClient.add(d);
+    this.onItemAdded.emit(d);
+  }
+
+  elegido(e: DestinoViaje) {
+    this.destinosApiClient.getAll().forEach(x => x.setSelected(false));
+    e.setSelected(true);
   }
 }
