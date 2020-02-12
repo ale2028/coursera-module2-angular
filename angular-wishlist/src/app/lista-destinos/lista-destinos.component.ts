@@ -3,7 +3,9 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {DestinoViaje} from '../models/destino-viaje.model';
 // @ts-ignore
 import {DestinosApiClient} from '../models/destinos-api-client.model';
-import {DestinosApiService} from "../models/destinos-api.service";
+// @ts-ignore
+import {DestinosApiClientModel} from '../models/destinos-api-client.model';
+
 // @ts-ignore
 @Component({
   selector: 'app-lista-destinos',
@@ -13,7 +15,7 @@ import {DestinosApiService} from "../models/destinos-api.service";
 export class ListaDestinosComponent implements OnInit {
   @Output() onItemAdded: EventEmitter<DestinoViaje>;
 
-  constructor(private destinosApiClient: DestinosApiService) {
+  constructor(private destinosApiClient: DestinosApiClientModel) {
     this.onItemAdded = new EventEmitter();
   }
 
