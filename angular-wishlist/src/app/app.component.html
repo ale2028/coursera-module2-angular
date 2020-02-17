@@ -4,7 +4,6 @@
       <h1>Ruteo Simple</h1>
       <div class="navLinks">
         <a [routerLink]="['/home']">Home</a>
-        <a [routerLink]="['/destino']">Destino</a>
 
       </div>
     </div>
@@ -13,10 +12,14 @@
 
 <div class="row">
   <h1>
-    angular-wishlist
+    {{title}}
   </h1>
 </div>
 
 
 <router-outlet></router-outlet>
 </div>
+
+<hr class="mb-5">
+
+Fecha: {{ time | async}}
