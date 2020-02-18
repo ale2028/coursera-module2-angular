@@ -2,8 +2,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 // @ts-ignore
 import { NgModule } from '@angular/core';
+// @ts-ignore
+import { StoreDevtoolsModule } from '@ngrx/devtools';
 import { StoreModule as NgRxStoreModule } from '@ngrx/store';
-import {EffectsModule } from '@ngrx/effects';
+import { EffectsModule } from '@ngrx/effects';
 import { RouterModule, Routes} from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -57,7 +59,8 @@ const reducersInitialState = {
     RouterModule.forRoot(routes),
     AppRoutingModule,
     NgRxStoreModule.forRoot(reducers, {initialState: reducersInitialState}),
-    EffectsModule.forRoot([DestinosViajesEffects])
+    EffectsModule.forRoot([DestinosViajesEffects]),
+    StoreDevtoolsModule.instrument()
   ],
   providers: [
     DestinosApiClientModel
