@@ -2,6 +2,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 // @ts-ignore
 import { NgModule } from '@angular/core';
+import { StoreModule as NgRxStoreModule } from '@ngrx/store';
+import {EffectsModule } from '@ngrx/effects';
 import { RouterModule, Routes} from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,6 +13,13 @@ import { DestinoDetalleComponent } from './destino-detalle/destino-detalle.compo
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { FormDestinoViajeComponent } from './form-destino-viaje/form-destino-viaje.component';
 import {DestinosApiClientModel} from './models/destinos-api-client.model';
+import {
+  DestinosViajesEffects,
+  DestinosViajesStateModel,
+  initializeDestinosViajesStateModel,
+  reducerDestinosViajes
+} from './models/destinos-viajes-state.model';
+import {ActionReducerMap} from '@ngrx/store';
 
 
 const routes: Routes = [
@@ -18,6 +27,20 @@ const routes: Routes = [
   {path: 'home', component: ListaDestinosComponent},
   {path: 'destino/:id', component: DestinoDetalleComponent}
 ];
+
+// redux init
+export interface AppState {
+  destinos: DestinosViajesStateModel;
+}
+
+const reducers: ActionReducerMap<AppState> = {
+  destinos: reducerDestinosViajes
+};
+
+const reducersInitialState = {
+  destinos: initializeDestinosViajesStateModel()
+};
+// redux fin init
 
 @NgModule({
   declarations: [
@@ -32,7 +55,9 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot(routes),
-    AppRoutingModule
+    AppRoutingModule,
+    NgRxStoreModule.forRoot(reducers, {initialState: reducersInitialState}),
+    EffectsModule.forRoot([DestinosViajesEffects])
   ],
   providers: [
     DestinosApiClientModel

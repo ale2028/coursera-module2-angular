@@ -1,11 +1,13 @@
 import {DestinoViaje} from './destino-viaje.model';
 import {BehaviorSubject, Subject} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {AppState} from '../app.module';
 
 export class DestinosApiClientModel {
   destinos: DestinoViaje[];
   current: Subject <DestinoViaje> = new BehaviorSubject<DestinoViaje>(null);
 
-  constructor() {
+  constructor(private destinosApiClient: DestinosApiClientModel, private store: Store<AppState>) {
     this.destinos = [];
   }
 
@@ -17,7 +19,7 @@ export class DestinosApiClientModel {
   return this.destinos;
   }
 
-  getById(id: String): DestinoViaje {
+  getById(id: string): DestinoViaje {
 
     return this.destinos.filter(function(d) {
       return d.id.toString() === id; }) [0];
@@ -29,7 +31,7 @@ export class DestinosApiClientModel {
     this.current.next(d);
   }
 
-  subscribeOnChange(fn){
+  subscribeOnChange(fn) {
     this.current.subscribe(fn);
   }
 
