@@ -5,6 +5,7 @@ import {fromEvent} from 'rxjs';
 import {map, filter, debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import {ajax} from 'rxjs/ajax';
 
+
 @Component({
   selector: 'app-form-destino-viaje',
   templateUrl: './form-destino-viaje.component.html',
@@ -33,10 +34,10 @@ export class FormDestinoViajeComponent implements OnInit {
   }
 
   ngOnInit() {
-    let elemNombre = <HTMLInputElement> document.getElementById('nombre');
+    const elemNombre = document.getElementById('nombre') as HTMLInputElement;
     fromEvent(elemNombre, 'input')
       .pipe(
-        map((e: keyboardEvent) => (e.target as HTMLInputElement).value),
+        map((e: KeyboardEvent) => (e.target as HTMLInputElement).value),
         filter(text => text.length > 2),
         debounceTime(200),
         distinctUntilChanged(),

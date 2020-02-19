@@ -11,7 +11,7 @@ import {DestinoViaje} from '../models/destino-viaje.model';
 export class DestinoDetalleComponent implements OnInit {
   destino: DestinoViaje;
 
-  constructor(private: route: ActivatedRoute, private destinosApiClient: DestinosApiClientModel) { }
+  constructor(private route: ActivatedRoute, private destinoApiCliente: DestinosApiClientModel) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');

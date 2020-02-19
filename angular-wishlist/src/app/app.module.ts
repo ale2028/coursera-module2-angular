@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 // @ts-ignore
 import { NgModule } from '@angular/core';
 // @ts-ignore
-import { StoreDevtoolsModule } from '@ngrx/devtools';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule as NgRxStoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterModule, Routes} from '@angular/router';
