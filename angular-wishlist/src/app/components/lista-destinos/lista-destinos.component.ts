@@ -1,19 +1,20 @@
 // @ts-ignore
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {DestinoViaje} from '../models/destino-viaje.model';
+import {DestinoViaje} from '../../models/destino-viaje.model';
 // @ts-ignore
-import {DestinosApiClient} from '../models/destinos-api-client.model';
+import {DestinosApiClient} from '../../models/destinos-api-client.model';
 // @ts-ignore
-import {DestinosApiClientModel} from '../models/destinos-api-client.model';
+import {DestinosApiClientModel} from '../../models/destinos-api-client.model';
 import {Store} from '@ngrx/store';
-import {AppState} from '../app.module';
-import {ElegidoFavoritoAction, NuevoDestinoAction} from '../models/destinos-viajes-state.model';
+import {AppState} from '../../app.module';
+import {ElegidoFavoritoAction, NuevoDestinoAction} from '../../models/destinos-viajes-state.model';
 
 // @ts-ignore
 @Component({
   selector: 'app-lista-destinos',
   templateUrl: './lista-destinos.component.html',
-  styleUrls: ['./lista-destinos.component.css']
+  styleUrls: ['./lista-destinos.component.css'],
+  providers: [DestinosApiClientModel]
 })
 export class ListaDestinosComponent implements OnInit {
   @Output() onItemAdded: EventEmitter<DestinoViaje>;
