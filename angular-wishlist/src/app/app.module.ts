@@ -1,14 +1,15 @@
 // @ts-ignore
 import { BrowserModule } from '@angular/platform-browser';
 // @ts-ignore
-import {InjectionToken, NgModule} from '@angular/core';
+import {APP_INITIALIZER, Injectable, InjectionToken, NgModule} from '@angular/core';
 // @ts-ignore
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { StoreModule as NgRxStoreModule } from '@ngrx/store';
+import {Store, StoreModule as NgRxStoreModule} from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterModule, Routes} from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import {HttpClient, HttpClientModule, HttpHeaders, HttpRequest} from '@angular/common/http';
 import { DestinoViajeComponent } from './components/destino-viaje/destino-viaje.component';
 import { ListaDestinosComponent } from './components/lista-destinos/lista-destinos.component';
 import { DestinoDetalleComponent } from './components/destino-detalle/destino-detalle.component';
@@ -39,11 +40,12 @@ export interface AppConfig {
 }
 
 const APP_CONFIG_VALUE: AppConfig = {
-  apiEndpoint: 'http://localhost:3000'
+  apiEndpoint: 'http://localhost:30  00'
 };
 export const APP_CONFIG = new InjectionToken<AppConfig>('app.config');
 // app config end
 
+// init routing
 export const childrenRoutesVuelos: Routes = [
   {path: '', redirectTo: 'main', pathMatch: 'full'},
   {path: 'main', component: VuelosMainComponentComponent},
@@ -59,6 +61,7 @@ const routes: Routes = [
   {path: 'protected', component: ProtectedComponent, canActivate: [UsuarioLogueadoGuard]},
   {path: 'vuelos', component: VuelosComponentComponent, canActivate: [UsuarioLogueadoGuard], children: childrenRoutesVuelos}
 ];
+// routing ends
 
 // redux init
 export interface AppState {
@@ -73,6 +76,22 @@ const reducersInitialState = {
   destinos: initializeDestinosViajesStateModel()
 };
 // redux fin init
+
+// app init
+export function init_app(appLoadService: AppLoadService): () => Promise<any> {
+  return () => appLoadService.initializeDestinosViajesState();
+}
+@Injectable()
+class AppLoadService {
+  constructor(private store: Store<AppState>, private http: HttpClient) { }
+  async initializeDestinosViajesState(): Promise<any> {
+    const headers: HttpHeaders = new HttpHeaders({'X-API-TOKEN': 'token-seguridad'});
+    const req = new HttpRequest('GET', APP_CONFIG_VALUE.apiEndpoint + '/my', {headers});
+    const response: any = await this.http.request(req).toPromise();
+    this.store.dispatch(new InitMyDataAction(response.body));
+  }
+}
+// app init ends
 
 @NgModule({
   declarations: [
@@ -92,6 +111,7 @@ const reducersInitialState = {
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     RouterModule.forRoot(routes),
     AppRoutingModule,
     NgRxStoreModule.forRoot(reducers, {initialState: reducersInitialState}),
@@ -102,7 +122,9 @@ const reducersInitialState = {
   providers: [
     AuthService,
     UsuarioLogueadoGuard,
-    { provide: APP_CONFIG, useValue: APP_CONFIG_VALUE}
+    { provide: APP_CONFIG, useValue: APP_CONFIG_VALUE},
+    AppLoadService,
+    { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true }
   ],
   bootstrap: [AppComponent]
 })
